@@ -22,7 +22,10 @@ public class Company {
     @NonFinal
     double totalCost;
 
-    public Company(String name, List<Programmer> programmers, Manager manager, int singleRateProgrammers) {
+    public Company(String name,
+                   List<Programmer> programmers,
+                   Manager manager,
+                   int singleRateProgrammers) {
         this.name = name;
         this.manager = manager;
         this.programmers = programmers;
@@ -53,8 +56,11 @@ public class Company {
 
     //5.4
     public void paySalaries() {
+
         totalCost += manager.getRate() * workHours.getOrDefault(manager, 0);
+        manager.setMoneyEarned(workHours.getOrDefault(manager, 0) * manager.getRate());
         for (Programmer programmer : programmers) {
+            programmer.setMoneyEarned(workHours.getOrDefault(programmer, 0) * programmer.getRate());
             totalCost += programmer.getRate() * workHours.getOrDefault(programmer, 0);
             workHours.put(programmer, 0);
         }

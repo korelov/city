@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @ToString(includeFieldNames = false)
 public class Task {
+    @NonNull
     final String name;
     final int numberHoursPerTask;
     boolean isDone;

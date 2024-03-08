@@ -1,14 +1,17 @@
 package org.javaacademy;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-@Getter
 
+@Setter
+@Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Employee extends Human {
     int moneyEarned;
-    @Setter
     int rate;
 
     public Employee(@NonNull String name,

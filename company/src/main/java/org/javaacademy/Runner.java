@@ -21,5 +21,10 @@ public class Runner {
         oracle.weeklyWork(tasks);
         oracle.paySalaries();
         oracle.companyInfo();
+
+        //кто сколько заработал
+        System.out.println(manager.getFullName() + "заработал " + manager.getMoneyEarned());
+        System.out.println(programmerOne.getFullName() + "заработал " + programmerOne.getMoneyEarned());
+        System.out.println(programmerTwo.getFullName() + "заработал " + programmerTwo.getMoneyEarned());
     }
 }
