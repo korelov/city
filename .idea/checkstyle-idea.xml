@@ -4,11 +4,16 @@
     <checkstyleVersion>10.13.0</checkstyleVersion>
     <scanScope>JavaOnly</scanScope>
     <copyLibs>true</copyLibs>
+    <option name="thirdPartyClasspath" />
+    <option name="activeLocationIds">
+      <option value="0e60f8ea-eb21-43a7-953d-fd3bacbb4b29" />
+      <option value="a3b7a2d5-e225-41cb-95ae-da3844d4cda7" />
+    </option>
     <option name="locations">
       <list>
         <ConfigurationLocation id="bundled-sun-checks" type="BUNDLED" scope="All" description="Sun Checks">(bundled)</ConfigurationLocation>
         <ConfigurationLocation id="bundled-google-checks" type="BUNDLED" scope="All" description="Google Checks">(bundled)</ConfigurationLocation>
-        <ConfigurationLocation id="0e60f8ea-eb21-43a7-953d-fd3bacbb4b29" type="LOCAL_FILE" scope="All" description="courseCheck">
+        <ConfigurationLocation id="a3b7a2d5-e225-41cb-95ae-da3844d4cda7" type="LOCAL_FILE" scope="All" description="google_checks">
           D:/Programming/google_checks.xml
           <option name="properties">
             <map>
