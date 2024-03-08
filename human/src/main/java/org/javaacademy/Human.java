@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedList;
+import java.util.Locale;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -26,9 +27,9 @@ public class Human {
                  @NonNull String surname,
                  @NonNull String patronymic,
                  Gender gender) {
-        this.name = StringUtils.capitalize(name);
-        this.surname = StringUtils.capitalize(surname);
-        this.patronymic = StringUtils.capitalize(patronymic);
+        this.name = StringUtils.capitalize(name.toLowerCase(Locale.ROOT));
+        this.surname = StringUtils.capitalize(surname.toLowerCase(Locale.ROOT));
+        this.patronymic = StringUtils.capitalize(patronymic.toLowerCase(Locale.ROOT));
         this.gender = gender;
     }
 

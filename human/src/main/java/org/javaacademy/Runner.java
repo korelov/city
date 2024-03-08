@@ -10,7 +10,7 @@ public class Runner {
         Human humanOne1 = new Human("максим", "корелов", "владимирович", MALE);
         System.out.println(humanOne.equals(humanOne1));
 
-        Human humanTwo = new Human("оля", "виноградова", "сергеевна", FEMALE);
+        Human humanTwo = new Human("оля", "виНОГРАдова", "сергеевна", FEMALE);
         Human children = humanOne.makeChildren(
                 "петя", "корелов", "максимович", MALE, humanTwo);
 
