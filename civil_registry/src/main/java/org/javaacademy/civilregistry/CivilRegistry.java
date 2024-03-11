@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.javaacademy.civilregistry.enums.CivilAction;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.javaacademy.civilregistry.enums.CivilAction.*;
 import static org.javaacademy.civilregistry.enums.FamilyStatus.DIVORCED;
@@ -23,16 +24,22 @@ import static org.javaacademy.civilregistry.enums.FamilyStatus.MARRIED;
 public class CivilRegistry {
     @NonNull
     final String name;
-    MultiValuedMap<LocalDate, RecordingCivilAction> civilRegistries = new ArrayListValuedHashMap<>();
+    Map<LocalDate, List<RecordingCivilAction>> civilRegistries = new TreeMap<>(LocalDate::compareTo);
 
-    private void addRecordingCivilAction(RecordingCivilAction recordingCivilAction) {
-        civilRegistries.put(recordingCivilAction.getLocalDate(), recordingCivilAction);
+    private void addRecordingCivilAction(LocalDate localDate, RecordingCivilAction recordingCivilAction) {
+        if (!civilRegistries.containsKey(localDate)) {
+            civilRegistries.put(localDate, new ArrayList<>());
+        }
+        civilRegistries.get(localDate)
+                .add(new RecordingCivilAction(localDate,
+                        recordingCivilAction.getCivilAction(),
+                        recordingCivilAction.getCitizenList()));
     }
 
     //3.4.1
     public void childBirth(Citizen children, Citizen citizen1, Citizen citizen2, LocalDate localDate) {
         checkParents(children, citizen1, citizen2);
-        addRecordingCivilAction(new RecordingCivilAction(localDate,
+        addRecordingCivilAction(localDate, new RecordingCivilAction(localDate,
                 REGISTRATION_BIRTH, List.of(children, citizen1, citizen2)));
     }
 
@@ -49,7 +56,7 @@ public class CivilRegistry {
         checkFamilyStatus(citizen2);
         checkSpouseStatus(citizen1);
         checkSpouseStatus(citizen2);
-        addRecordingCivilAction(new RecordingCivilAction(localDate,
+        addRecordingCivilAction(localDate, new RecordingCivilAction(localDate,
                 REGISTRATION_WEDDING, List.of(citizen1, citizen2)));
         citizen1.setSpouse(citizen2);
         citizen2.setSpouse(citizen1);
@@ -77,7 +84,8 @@ public class CivilRegistry {
         citizen2.setSpouse(null);
         citizen1.setFamilyStatus(DIVORCED);
         citizen2.setFamilyStatus(DIVORCED);
-        addRecordingCivilAction(new RecordingCivilAction(localDate, REGISTRATION_DIVORCE, List.of(citizen1, citizen2)));
+        addRecordingCivilAction(localDate,
+                new RecordingCivilAction(localDate, REGISTRATION_DIVORCE, List.of(citizen1, citizen2)));
     }
 
     private void checkIsMarried(Citizen citizen1, Citizen citizen2) {
@@ -89,8 +97,7 @@ public class CivilRegistry {
     //3.4.4
     public void printStatistic() {
         System.out.printf("Статистика по ЗАГС: %s\n", name);
-        List<LocalDate> collect = civilRegistries.keySet().stream().sorted().toList();
-        for (LocalDate localDate : collect) {
+        for (LocalDate localDate : civilRegistries.keySet()) {
             List<RecordingCivilAction> values = civilRegistries.get(localDate).stream().toList();
             System.out.printf("Дата %s: ", localDate);
             System.out.println(dayStatistic(values));
