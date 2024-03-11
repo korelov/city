@@ -1,9 +1,8 @@
-package org.javaacademy;
+package org.javaacademy.profession;
 
 import lombok.NonNull;
-import lombok.ToString;
+import org.javaacademy.human.enums.Gender;
 
-@ToString
 public class Manager extends Employee {
     public Manager(@NonNull String name,
                    @NonNull String surname,

@@ -1,4 +1,4 @@
-package org.javaacademy;
+package org.javaacademy.civilregistry;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -7,14 +7,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.javaacademy.enums.CivilAction;
+import org.javaacademy.civilregistry.enums.CivilAction;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.javaacademy.enums.CivilAction.*;
-import static org.javaacademy.enums.FamilyStatus.DIVORCED;
-import static org.javaacademy.enums.FamilyStatus.MARRIED;
+import static org.javaacademy.civilregistry.enums.CivilAction.*;
+import static org.javaacademy.civilregistry.enums.FamilyStatus.DIVORCED;
+import static org.javaacademy.civilregistry.enums.FamilyStatus.MARRIED;
+
 
 @RequiredArgsConstructor
 @Getter
@@ -30,7 +31,16 @@ public class CivilRegistry {
 
     //3.4.1
     public void childBirth(Citizen children, Citizen citizen1, Citizen citizen2, LocalDate localDate) {
-        addRecordingCivilAction(new RecordingCivilAction(localDate, REGISTRATION_BIRTH, List.of(children, citizen1, citizen2)));
+        checkParents(children, citizen1, citizen2);
+        addRecordingCivilAction(new RecordingCivilAction(localDate,
+                REGISTRATION_BIRTH, List.of(children, citizen1, citizen2)));
+    }
+
+    private void checkParents(Citizen children, Citizen parentOne, Citizen parentTwo) {
+        if (!((children.getFather().equals(parentOne) && children.getMother().equals(parentTwo))
+                || (children.getFather().equals(parentTwo) && children.getMother().equals(parentOne)))) {
+            throw new IllegalArgumentException("Не являются родителями ребенка");
+        }
     }
 
     //3.4.2
@@ -39,7 +49,8 @@ public class CivilRegistry {
         checkFamilyStatus(citizen2);
         checkSpouseStatus(citizen1);
         checkSpouseStatus(citizen2);
-        addRecordingCivilAction(new RecordingCivilAction(localDate, REGISTRATION_WEDDING, List.of(citizen1, citizen2)));
+        addRecordingCivilAction(new RecordingCivilAction(localDate,
+                REGISTRATION_WEDDING, List.of(citizen1, citizen2)));
         citizen1.setSpouse(citizen2);
         citizen2.setSpouse(citizen1);
         citizen1.setFamilyStatus(MARRIED);
@@ -54,7 +65,8 @@ public class CivilRegistry {
 
     private void checkSpouseStatus(Citizen citizen) {
         if (citizen.getSpouse() != null) {
-            throw new IllegalArgumentException(citizen.getFullName() + " состоит в отношениях с " + citizen.getSpouse().getFullName());
+            throw new IllegalArgumentException(citizen.getFullName()
+                    + " состоит в отношениях с " + citizen.getSpouse().getFullName());
         }
     }
 
@@ -70,7 +82,7 @@ public class CivilRegistry {
 
     private void checkIsMarried(Citizen citizen1, Citizen citizen2) {
         if (!citizen1.getSpouse().equals(citizen2) || !citizen2.getSpouse().equals(citizen1)) {
-            throw new IllegalArgumentException("Люди не женаты");
+            throw new IllegalArgumentException("Люди не в отношениях");
         }
     }
 
@@ -94,7 +106,8 @@ public class CivilRegistry {
             devorce += civilActionCount(value, REGISTRATION_DIVORCE);
             birth += civilActionCount(value, REGISTRATION_BIRTH);
         }
-        return String.format("количество свадеб - %d, количество разводов - %d, количество рождений - %d", wedding, devorce, birth);
+        return String.format("количество свадеб - %d, количество разводов - %d, количество рождений - %d",
+                wedding, devorce, birth);
     }
 
     private int civilActionCount(RecordingCivilAction recordingCivilAction, CivilAction civilAction) {

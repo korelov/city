@@ -1,16 +1,14 @@
-package org.javaacademy;
+package org.javaacademy.profession;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Objects;
+import org.javaacademy.human.enums.Gender;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Programmer extends Employee {
-    Task task;
 
     public Programmer(@NonNull String name,
                       @NonNull String surname,
@@ -28,16 +26,7 @@ public class Programmer extends Employee {
         throw new IllegalArgumentException("Ставка от 1500 до 2000 рублей");
     }
 
-    public void changeTaskStatus(@NonNull Task task) {
-        if (this.task.isDone()) {
-            task.setDone(false);
-            return;
-        }
-        task.setDone(true);
-    }
-
     public void acceptsTask(Task task) {
-        this.task = task;
         task.setDone(true);
     }
 

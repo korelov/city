@@ -1,16 +1,16 @@
-package org.javaacademy;
+package org.javaacademy.civilregistry;
 
 import java.time.LocalDate;
+import java.time.Month;
 
-import static org.javaacademy.Gender.FEMALE;
-import static org.javaacademy.Gender.MALE;
-import static org.javaacademy.enums.FamilyStatus.NOT_MARRIED;
+import static org.javaacademy.civilregistry.enums.FamilyStatus.NOT_MARRIED;
+import static org.javaacademy.human.enums.Gender.FEMALE;
+import static org.javaacademy.human.enums.Gender.MALE;
 
 public class RunnerTest {
     public static void main(String[] args) {
         CivilRegistry civilRegistry = new CivilRegistry("TEST_ZAGS");
-        LocalDate localDate = LocalDate.of(2023, 2, 20);
-
+        LocalDate localDate = LocalDate.of(2023, Month.FEBRUARY, 20);
         Citizen maksim = new Citizen(
                 "максим", "корелов", "владимирович", MALE, NOT_MARRIED);
         Citizen marina = new Citizen(
@@ -19,14 +19,18 @@ public class RunnerTest {
                 "олег", "иванов", "олегович", MALE, NOT_MARRIED);
         Citizen anna = new Citizen(
                 "анна", "виноградова", "петрович", FEMALE, NOT_MARRIED);
-
+        Citizen petr = new Citizen(marina.makeChildren(
+                "Петя", "ребенок", "ребенок", MALE, maksim));
+        Citizen olya = new Citizen(anna.makeChildren(
+                "оля", "ребенок", "ребенок", FEMALE, oleg));
+        Citizen vika = new Citizen(marina.makeChildren(
+                "оля", "ребенок", "ребенок", FEMALE, maksim));
         civilRegistry.weddingRegistration(maksim, marina, localDate);
         civilRegistry.weddingRegistration(oleg, anna, localDate);
         civilRegistry.divorce(oleg, anna, localDate);
-
-//        тут две ошибки, вызов у null метода из human и каст из субкласса в суперкласс
-//        System.out.println(oleg.getSpouse().getFullName());
-//        Human children = marina.makeChildren("ребенок", "ребенок", "ребенок", MALE, maksim);
+        civilRegistry.childBirth(petr, maksim, marina, localDate);
+        civilRegistry.childBirth(olya, oleg, anna, localDate);
+        civilRegistry.childBirth(vika, marina, maksim, localDate);
         civilRegistry.printStatistic();
     }
 }

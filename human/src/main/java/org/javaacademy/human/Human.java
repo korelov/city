@@ -1,18 +1,16 @@
-package org.javaacademy;
+package org.javaacademy.human;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.StringUtils;
+import org.javaacademy.human.enums.Gender;
 
 import java.util.LinkedList;
 import java.util.Locale;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"father", "mother", "children"})
 public class Human {
     final String name;
     final String surname;
@@ -20,12 +18,12 @@ public class Human {
     final Gender gender;
     Human father;
     Human mother;
-    @EqualsAndHashCode.Exclude
-    final LinkedList<Human> children = new LinkedList<>();
+    LinkedList<Human> children = new LinkedList<>();
 
     public Human(@NonNull String name,
                  @NonNull String surname,
-                 @NonNull String patronymic,
+                 @NonNull
+                 String patronymic,
                  Gender gender) {
         this.name = StringUtils.capitalize(name.toLowerCase(Locale.ROOT));
         this.surname = StringUtils.capitalize(surname.toLowerCase(Locale.ROOT));
@@ -33,7 +31,15 @@ public class Human {
         this.gender = gender;
     }
 
-    @NonNull
+    public Human(Human children) {
+        this.name = children.getName();
+        this.surname = children.getSurname();
+        this.patronymic = children.getPatronymic();
+        this.gender = children.getGender();
+        this.father = children.getFather();
+        this.mother = children.getMother();
+    }
+
     public String getFullName() {
         return String.format("%s %s %s", surname, name, patronymic);
     }
